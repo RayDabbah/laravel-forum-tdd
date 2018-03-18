@@ -6,17 +6,13 @@
             <div class="card">
                 <div class="card-header">Threads</div>
                 <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                    @endif 
                     @foreach($threads as $thread)
-                <h2>
-                    <a href="/threads/{{ $thread->id }}">
-                    {{$thread->title}}
-                </a>
-            </h2>
+                    <h2>
+                        <a href="{{ $thread->path() }}">
+                            {{$thread->title}}
+                        </a>
+                    </h2>
+                    <h4>Created {{ $thread->created_at->diffForHumans() }}</h4>
                     <h5>{{$thread->user()->first()->name}}</h5>
                     <br>
                     <p>{{$thread->body}}</p>

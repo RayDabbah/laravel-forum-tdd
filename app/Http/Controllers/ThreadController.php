@@ -48,8 +48,10 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
+
+        $replies = $thread->replies()->latest()->with('user')->get();
         
-        return view('show-thread', compact('thread'));
+        return view('show-thread', compact('thread'), compact('replies'));
     }
 
     /**

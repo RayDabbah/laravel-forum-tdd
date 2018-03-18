@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ThreadsTest extends TestCase
@@ -29,21 +28,34 @@ public function setUp()
     public function a_user_can_browse_all_threads()
     {
 
-        $response = $this->get('/threads');
+        $response = $this->get('/threads')
         
-        $response->assertStatus(200);
+        ->assertStatus(200)
         
-        $response->assertSee($this->thread->title);
+        ->assertSee($this->thread->title);
 
     }
+    /** @test */
     public function a_user_can_browse_a_specific_thread()
     {
         
-        $response = $this->get('/threads/'. $this->thread->id);
+        $response = $this->get('/threads/'. $this->thread->id)
 
-        $response->assertStatus(200);
+        ->assertStatus(200)
 
-        $response->assertSee($this->thread->title);
+        ->assertSee($this->thread->title);
 
     }
+
+
+    /** @test */
+    public function a_user_can_read_replies_associated_with_a_thread()
+    {
+
+        $reply = factory(\App\Reply::class)->create(['thread_id' => $this->thread->id]);
+
+        $response = $this->get('/threads/'. $this->thread->id);
+
+        $response->assertSee($reply->body);
+    } 
 }
